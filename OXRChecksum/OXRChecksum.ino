@@ -1,3 +1,4 @@
+
 /*
    Author :Mesut Saygıoğlu
    Date   :04.08.2021
@@ -26,8 +27,8 @@ void loop() {
                         ReturnFormats::DatawithChecksumAdded);
     //}==============Transmitter===============
     
-    Serial.println("encoded and sent");
-
+    Serial.print("encoded and sent");
+    Serial.println(dataToSend);
     // send the data
     //
     String receivedData=dataToSend;

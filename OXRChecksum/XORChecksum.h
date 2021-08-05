@@ -53,8 +53,9 @@ class XORChecksum
       // trim the invalid tail.
       rawData.trim();
       // delete the first two bytes and last two bytes.
-      rawData.substring(2, rawData.length() - 2);
-
+      rawData = rawData.substring(2, rawData.length() - 2);
+      Serial.print("delete start-stop :");
+      Serial.println(rawData);
       Serial.print("rawData.length() :");
       Serial.println(rawData.length());
       // we need some info to encode the raw data.
@@ -73,11 +74,11 @@ class XORChecksum
       Serial.print("Checksum :");
       Serial.println(checksum);
 
-     /*
-        The checksum can consist of two digits.
-        So we will be dealing with two chars.
-        to standardize the evaluatıon,
-        we will add a zero, if the checksum is only one digit.
+      /*
+         The checksum can consist of two digits.
+         So we will be dealing with two chars.
+         to standardize the evaluatıon,
+         we will add a zero, if the checksum is only one digit.
       */
       String strChecksum = "";
       if (checksum < 9)
@@ -125,7 +126,7 @@ class XORChecksum
 
          @ it will delete the first two bytes and last two bytes. @
       */
-      //rawData.substring(2,rawData.length()-2);
+      // rawData.substring(2,rawData.length()-2);
 
       // extract the checksum from the received message.
       String checkSumStr = incomingData.substring(incomingData.length() - 2,
@@ -159,6 +160,7 @@ class XORChecksum
       //Serial.print("string in the process :");
       //Serial.println(incomingData);
       incomingData.trim();
+
       String data                    = XORChecksum::decode(incomingData,
                                        ReturnFormats::OnlyData);
       String checksumValue           = XORChecksum::decode(incomingData,
@@ -167,6 +169,11 @@ class XORChecksum
       //Serial.print("string sfter decode   :");
       //Serial.println(data);
       //data.trim();
+      
+      // encode will try to delete the start and stop bits.
+      // But we already got rid of them.So will add some dummy start and stop data.
+      // encode will clear them.
+      data="xx"+data+"xx";
       String calculatedChecksumValue = XORChecksum::encode(data,
                                        ReturnFormats::OnlyChecksum);
 
